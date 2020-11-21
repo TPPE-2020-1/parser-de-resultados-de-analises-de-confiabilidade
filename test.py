@@ -1,10 +1,12 @@
 import pytest
 from main import (
     read_input_file,
-    delimiter_character
+    delimiter_character,
+    output_file
 )
 from Exceptions.ArquivoNaoEncontradoException import ArquivoNaoEncontradoException
 from Exceptions.DelimitadorInvalidoException import DelimitadorInvalidoException
+from Exceptions.EscritaNaoPermitidaException import EscritaNaoPermitidaException
 
 #Test Leitura do arquivo de entrada
 @pytest.mark.parametrize("input_file,expected", [('./utils/read_file_de.out', 'Datei gelesen'), ('./utils/read_file_en.out', 'File readed'), ('./utils/read_file_fr.out', 'Lecteur de fichiers'), ('./utils/read_file_pt.out', 'Arquivo lido')])
@@ -32,7 +34,7 @@ def test_invalid_delimiter_character(input_file):
 def test_output_file(directory, file_name, expected):
     assert output_file(directory, file_name).name == expected
 
-@pytest.mark.parametrize("directory, file_name", [('unexistent_dir/outputs/', 'output_test.out'), ('../../', 'other_output_test.out')])
+@pytest.mark.parametrize("directory, file_name", [('unexistent_dir/outputs/', 'output_test'), ('../../', 'other_output_test')])
 def test_invalid_output_file(directory, file_name):
     with pytest.raises(EscritaNaoPermitidaException):
         assert output_file(directory, file_name)
