@@ -5,6 +5,7 @@ from main import (
     output_file,
     file_format
 )
+from Exceptions.FormatoSaidaArquivoInvalidoException import FormatoSaidaArquivoInvalidoException
 from Exceptions.ArquivoNaoEncontradoException import ArquivoNaoEncontradoException
 from Exceptions.DelimitadorInvalidoException import DelimitadorInvalidoException
 from Exceptions.EscritaNaoPermitidaException import EscritaNaoPermitidaException
@@ -53,3 +54,9 @@ def test_invalid_output_file(directory, file_name):
 @pytest.mark.parametrize("file_format_option, expected", [('colunas', 'colunas'), ('linhas', 'linhas'), ('l', 'l'), ('c', 'c')])
 def test_file_format_option(file_format_option, expected):
     assert file_format(file_format_option) == expected
+
+
+@pytest.mark.parametrize("file_format_option, expected", [('diagonal', 'diagonal'), ('reverso', 'reverso'), ('d', 'd'), ('r', 'r')])
+def test_invalid_file_format_option(file_format_option, expected):
+    with pytest.raises(FormatoSaidaArquivoInvalidoException):
+        assert file_format(file_format_option)
