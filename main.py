@@ -1,6 +1,7 @@
 from Exceptions.ArquivoNaoEncontradoException import ArquivoNaoEncontradoException
 from Exceptions.DelimitadorInvalidoException import DelimitadorInvalidoException
 from Exceptions.EscritaNaoPermitidaException import EscritaNaoPermitidaException
+from Exceptions.FormatoSaidaArquivoInvalidoException import FormatoSaidaArquivoInvalidoException
 
 def read_input_file(input_file_name):
     try:
@@ -28,13 +29,26 @@ def output_file(directory, file_name):
     except:
         raise EscritaNaoPermitidaException(directory, file_name)
 
+def file_format(file_format_option):
+    expected_options = ['colunas', 'linhas', 'l', 'c']
+
+    if file_format_option.lower() in expected_options:
+        return file_format_option
+    else:
+        raise FormatoSaidaArquivoInvalidoException(file_format_option)
+
 def main():
     file_path = input("Insert file path: ")
     file_data = read_input_file(file_path)
+    
     delimiter_symbol = input("Insert delimiter symbol: ")
     delimiter_symbol = delimiter_character(delimiter_symbol)
+    
     directory = input("Type output directory to be outputted: ")
     file = input("Type output file name: ")
     outputted_file = output_file(directory, file)
+
+    output_format = input("Type output file format(linhas[l] | colunas[c]): ")
+    output_format = file_format(output_format)
 if __name__ == "__main__":
     main()
