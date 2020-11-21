@@ -1,6 +1,10 @@
 import pytest
-from main import read_input_file
+from main import (
+    read_input_file,
+    delimiter_character
+)
 from Exceptions.ArquivoNaoEncontradoException import ArquivoNaoEncontradoException
+from Exceptions.DelimitadorInvalidoException import DelimitadorInvalidoException
 
 #Test Leitura do arquivo de entrada
 @pytest.mark.parametrize("input_file,expected", [('./utils/read_file_de.out', 'Datei gelesen'), ('./utils/read_file_en.out', 'File readed'), ('./utils/read_file_fr.out', 'Lecteur de fichiers'), ('./utils/read_file_pt.out', 'Arquivo lido')])
