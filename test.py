@@ -26,3 +26,8 @@ def test_delimiter_character(input_file, expected):
 def test_invalid_delimiter_character(input_file):
     with pytest.raises(DelimitadorInvalidoException):
         assert delimiter_character(input_file)
+
+#Test Definição do caminho do arquivo de saída.
+@pytest.mark.parametrize("directory, file_name, expected", [('utils', 'output_test.out', 'utils/output_test.out'), ('./', 'other_output_test.out', './other_output_test.out')])
+def test_output_file(directory, file_name, expected):
+    assert output_file(directory, file_name).name == expected

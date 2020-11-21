@@ -1,4 +1,3 @@
-
 from Exceptions.ArquivoNaoEncontradoException import ArquivoNaoEncontradoException
 from Exceptions.DelimitadorInvalidoException import DelimitadorInvalidoException
 
