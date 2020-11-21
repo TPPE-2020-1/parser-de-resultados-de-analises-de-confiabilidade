@@ -1,4 +1,5 @@
-from exceptions.ArquivoNaoEncontradoException import ArquivoNaoEncontradoException
+
+from Exceptions.ArquivoNaoEncontradoException import ArquivoNaoEncontradoException
 
 def read_input_file(input_file_name):
     try:

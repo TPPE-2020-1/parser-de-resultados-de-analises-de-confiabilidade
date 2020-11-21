@@ -8,6 +8,6 @@ def test_read_input_file(input, expected):
     assert file == expected
 
 @pytest.mark.parametrize("input", [('./utils/read_file_es.out'), ('./test_utils/read_file_en.out')])
-def test_read_input_file_not_found(input, expected):
+def test_read_input_file_not_found(input):
     with pytest.raises(ArquivoNaoEncontradoException):
         assert read_input_file(input)
