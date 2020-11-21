@@ -31,3 +31,8 @@ def test_invalid_delimiter_character(input_file):
 @pytest.mark.parametrize("directory, file_name, expected", [('utils', 'output_test.out', 'utils/output_test.out'), ('./', 'other_output_test.out', './other_output_test.out')])
 def test_output_file(directory, file_name, expected):
     assert output_file(directory, file_name).name == expected
+
+@pytest.mark.parametrize("directory, file_name", [('unexistent_dir/outputs/', 'output_test.out'), ('../../', 'other_output_test.out')])
+def test_invalid_output_file(directory, file_name):
+    with pytest.raises(EscritaNaoPermitidaException):
+        assert output_file(directory, file_name)
