@@ -11,5 +11,5 @@ def main():
     file_path = input("Insert file path: ") 
     file_data = read_input_file(file_path)
 
-if name == "main":
+if __name__ == "__main__":
     main()
