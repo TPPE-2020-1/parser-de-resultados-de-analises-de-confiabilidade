@@ -10,7 +10,9 @@ from Exceptions.FormatoSaidaArquivoInvalidoException import FormatoSaidaArquivoI
 from Exceptions.ArquivoNaoEncontradoException import ArquivoNaoEncontradoException
 from Exceptions.DelimitadorInvalidoException import DelimitadorInvalidoException
 from Exceptions.EscritaNaoPermitidaException import EscritaNaoPermitidaException
+from Exceptions.FormatoArquivoInvalidoException import FormatoArquivoInvalidoException
 from mock.file_data_test import file_data_mock1, file_data_mock2
+from mock.invalid_file_data import invalid_file_data1, invalid_file_data2
 
 
 # Test Leitura do arquivo de entrada
@@ -69,6 +71,11 @@ def test_invalid_file_format_option(file_format_option, expected):
 # Test Parser de dados
 
 @pytest.mark.parametrize("file_data, expected", [(file_data_mock1['file_data'], file_data_mock1['parsed_data']), (file_data_mock2['file_data'], file_data_mock2['parsed_data'])])
-def test_read_input_file(file_data, expected):
+def test_parse_file_data(file_data, expected):
     parsed_data = parse_file_data(file_data)
     assert parsed_data == expected
+
+@pytest.mark.parametrize("file_data", [(invalid_file_data1), (invalid_file_data2)])
+def test_invalid_parse_file_data(file_data):
+    with pytest.raises(FormatoArquivoInvalidoException):
+        assert parse_file_data(file_data)
