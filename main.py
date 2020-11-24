@@ -4,6 +4,8 @@ from Exceptions.EscritaNaoPermitidaException import EscritaNaoPermitidaException
 from Exceptions.FormatoSaidaArquivoInvalidoException import FormatoSaidaArquivoInvalidoException
 from Exceptions.FormatoArquivoInvalidoException import FormatoArquivoInvalidoException
 
+from os.path import basename
+
 
 def read_input_file(input_file_name):
     try:
@@ -23,13 +25,15 @@ def delimiter_character(delimiter_symbol):
 def output_file(directory, file_name):
     try:
         file_list = file_name.split('.')
+
         name = file_list[0]
         extension = file_list[1]
-        if name[-3:] != 'Tab':
-            name += 'Tab'
+
         if directory[-1] != '/':
             directory += '/'
-        output_file_name = f"{directory}{name}.out"
+
+        output_file_name = f"{directory}{name}Tab.{extension}"
+
         output_file = open(output_file_name, "w")
         return output_file
     except:
@@ -89,8 +93,7 @@ def main():
     delimiter_symbol = delimiter_character(delimiter_symbol)
 
     directory = input("Type output directory to be outputted: ")
-    file = input("Type output file name: ")
-    outputted_file = output_file(directory, file)
+    outputted_file = output_file(directory, basename(file_path))
 
     output_format = input("Type output file format(linhas[l] | colunas[c]): ")
     output_format = file_format(output_format)

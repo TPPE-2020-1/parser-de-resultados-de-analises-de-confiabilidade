@@ -49,7 +49,7 @@ def test_invalid_delimiter_character(input_file):
 
 # Test Definição do caminho do arquivo de saída.
 
-@pytest.mark.parametrize("directory, file_name, expected", [('utils', 'output_testTab.out', 'utils/output_testTab.out'), ('./', 'other_output_test.out', './other_output_testTab.out')])
+@pytest.mark.parametrize("directory, file_name, expected", [('utils', 'output_test.out', 'utils/output_testTab.out'), ('./', 'other_output_test.out', './other_output_testTab.out')])
 def test_output_file(directory, file_name, expected):
     assert output_file(directory, file_name).name == expected
 
