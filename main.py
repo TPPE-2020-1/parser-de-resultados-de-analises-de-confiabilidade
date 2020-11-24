@@ -25,9 +25,11 @@ def output_file(directory, file_name):
         file_list = file_name.split('.')
         name = file_list[0]
         extension = file_list[1]
+        if name[-3:] != 'Tab':
+            name += 'Tab'
         if directory[-1] != '/':
             directory += '/'
-        output_file_name = f"{directory}{name}Tab.out"
+        output_file_name = f"{directory}{name}.out"
         output_file = open(output_file_name, "w")
         return output_file
     except:
