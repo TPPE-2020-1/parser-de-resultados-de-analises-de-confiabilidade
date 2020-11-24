@@ -4,21 +4,26 @@ from main import (
     delimiter_character,
     output_file,
     file_format,
-    parse_file_data
+    parse_file_data,
+    write_output_file
 )
+
 from Exceptions.FormatoSaidaArquivoInvalidoException import FormatoSaidaArquivoInvalidoException
 from Exceptions.ArquivoNaoEncontradoException import ArquivoNaoEncontradoException
 from Exceptions.DelimitadorInvalidoException import DelimitadorInvalidoException
 from Exceptions.EscritaNaoPermitidaException import EscritaNaoPermitidaException
 from Exceptions.FormatoArquivoInvalidoException import FormatoArquivoInvalidoException
+
 from mock.file_data_test import file_data_mock1, file_data_mock2
 from mock.invalid_file_data import invalid_file_data1, invalid_file_data2
+from mock.write_output_test import output_file_mock1, output_file_mock2
 
 
 # Test Leitura do arquivo de entrada
 
 @pytest.mark.parametrize("input_file,expected", [('./utils/read_file_de.out', 'Datei gelesen'), ('./utils/read_file_en.out', 'File readed'), ('./utils/read_file_fr.out', 'Lecteur de fichiers'), ('./utils/read_file_pt.out', 'Arquivo lido')])
 def test_read_input_file(input_file, expected):
+
     file = read_input_file(input_file)
     assert file == expected
 
@@ -75,7 +80,26 @@ def test_parse_file_data(file_data, expected):
     parsed_data = parse_file_data(file_data)
     assert parsed_data == expected
 
+
 @pytest.mark.parametrize("file_data", [(invalid_file_data1), (invalid_file_data2)])
 def test_invalid_parse_file_data(file_data):
     with pytest.raises(FormatoArquivoInvalidoException):
         assert parse_file_data(file_data)
+
+# Test Escrita do Arquivo
+
+
+@pytest.mark.parametrize("parsed_data, delimiter_symbol, output_file, output_format, expected_file",
+                         [(output_file_mock1['parsed_data'], output_file_mock1['delimiter_symbol'], output_file_mock1['output_file'],
+                           output_file_mock1['output_format'], output_file_mock1['expected_file']),
+                          (output_file_mock2['parsed_data'], output_file_mock2['delimiter_symbol'], output_file_mock2['output_file'],
+                           output_file_mock2['output_format'], output_file_mock2['expected_file'])])
+def test_write_output_file(parsed_data, delimiter_symbol, output_file, output_format, expected_file):
+    outputted_file = open(output_file, "w")
+
+    write_output_file(parsed_data, delimiter_symbol,
+                      outputted_file, output_format)
+
+    with open(output_file) as res_file:
+        with open(expected_file) as exp_file:
+            assert res_file.read() == exp_file.read()
