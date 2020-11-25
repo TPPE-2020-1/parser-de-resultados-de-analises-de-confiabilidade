@@ -4,6 +4,7 @@ from Exceptions.EscritaNaoPermitidaException import EscritaNaoPermitidaException
 from Exceptions.FormatoSaidaArquivoInvalidoException import FormatoSaidaArquivoInvalidoException
 from Exceptions.FormatoArquivoInvalidoException import FormatoArquivoInvalidoException
 
+from os.path import basename
 
 def read_input_file(input_file_name):
     try:
@@ -23,13 +24,15 @@ def delimiter_character(delimiter_symbol):
 def output_file(directory, file_name):
     try:
         file_list = file_name.split('.')
+
         name = file_list[0]
         extension = file_list[1]
-        if name[-3:] != 'Tab':
-            name += 'Tab'
+
         if directory[-1] != '/':
             directory += '/'
-        output_file_name = f"{directory}{name}.out"
+
+        output_file_name = f"{directory}{name}Tab.{extension}"
+
         output_file = open(output_file_name, "w")
         return output_file
     except:
@@ -50,7 +53,7 @@ def parse_file_data(file_data: str) -> dict:
 
     parsed_data = {}
 
-    regex = r'\-+\s.+\s\d+\s\-+\D(^\d+\D)+'
+    regex = r'\-+\s.+\s\d+\s\-+\D(^\d+\D?)+'
 
     if not re.search(regex, file_data, re.MULTILINE):
         raise FormatoArquivoInvalidoException()
@@ -68,7 +71,7 @@ def parse_file_data(file_data: str) -> dict:
 
         for value in values:
             try:
-                parsed_data[evolution].append(int(value.group()))
+                parsed_data[evolution].append(str(value.group()))
             except:
                 raise FormatoArquivoInvalidoException()
 
@@ -80,6 +83,40 @@ def parse_file_data(file_data: str) -> dict:
 
     return parsed_data
 
+def write_output_file(parsed_data, delimiter_symbol, outputted_file, output_format):
+    if output_format in ['linhas', 'l']:
+        for evolution, times in parsed_data.items():
+            partial = f"{delimiter_symbol}".join(times)
+            line = f"{evolution}{delimiter_symbol}{partial}"
+            outputted_file.write(line + '\n')
+        
+        outputted_file.close()
+        return;
+
+    max_times_size = 0
+    for i, evolution in enumerate(parsed_data.keys()):
+        outputted_file.write(str(evolution) + (delimiter_symbol if i < len(parsed_data.keys()) - 1 else '\n'))
+        
+        current_times_size = len(parsed_data[evolution])
+        if current_times_size > max_times_size:
+            max_times_size = current_times_size
+
+    i = 0
+    for idx in range (0, max_times_size):
+        for evolution in parsed_data.keys():
+            try:
+                outputted_file.write((delimiter_symbol if i != 0 else '') + str(parsed_data[evolution][idx]))
+            except:
+                outputted_file.write((f"{delimiter_symbol}NaN" if i != 0 and i + 1!= len(parsed_data.keys()) else ''))
+                
+            i += 1
+
+        outputted_file.write('\n')
+
+        i = 0
+
+    outputted_file.close()    
+    return;
 
 def main():
     file_path = input("Insert file path: ")
@@ -89,13 +126,13 @@ def main():
     delimiter_symbol = delimiter_character(delimiter_symbol)
 
     directory = input("Type output directory to be outputted: ")
-    file = input("Type output file name: ")
-    outputted_file = output_file(directory, file)
+    outputted_file = output_file(directory, basename(file_path))
 
     output_format = input("Type output file format(linhas[l] | colunas[c]): ")
     output_format = file_format(output_format)
 
     parsed_data = parse_file_data(file_data)
+    write_output_file(parsed_data, delimiter_symbol, outputted_file, output_format)
 
 
 if __name__ == "__main__":
