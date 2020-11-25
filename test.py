@@ -100,6 +100,7 @@ def test_write_output_file(parsed_data, delimiter_symbol, output_file, output_fo
     write_output_file(parsed_data, delimiter_symbol,
                       outputted_file, output_format)
 
-    with open(output_file) as res_file:
-        with open(expected_file) as exp_file:
-            assert res_file.read() == exp_file.read()
+    res_file = open(output_file, 'r')
+    exp_file = open(expected_file, 'r')
+
+    assert res_file.read() == exp_file.read()
