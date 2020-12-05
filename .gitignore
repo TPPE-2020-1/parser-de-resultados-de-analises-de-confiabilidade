@@ -137,3 +137,6 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 other_output_test.out
+
+outputted_*.txt
+*output*.out
