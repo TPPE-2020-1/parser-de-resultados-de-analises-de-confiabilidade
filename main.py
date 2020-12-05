@@ -1,6 +1,6 @@
 from os.path import basename
 
-from Parser import Parser
+from src.Parser import Parser
 
 
 def main():
