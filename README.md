@@ -1,4 +1,4 @@
-## Trabalho Prático 1 TPPE
+## Trabalho Prático TPPE
 
 ### Grupo:
 - Lucas Dutra Ferreira do Nascimento - 170050939
