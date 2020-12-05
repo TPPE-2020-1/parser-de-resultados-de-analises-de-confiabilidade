@@ -9,9 +9,10 @@ class Parser:
     def read_input_file(self, input_file_name):
         try:
             input_file = open(input_file_name)
+
+            return input_file.read()
         except:
             raise ArquivoNaoEncontradoException(input_file_name)
-        return input_file.read()
 
     def delimiter_character(self, delimiter_symbol):
         if len(delimiter_symbol) == 1:
@@ -19,17 +20,20 @@ class Parser:
         else:
             raise DelimitadorInvalidoException(delimiter_symbol)
 
+    def __get_output_filename(self, file_name, directory):
+        file_list = file_name.split('.')
+
+        name = file_list[0]
+        extension = file_list[1]
+
+        if directory[-1] != '/':
+            directory += '/'
+
+        return f"{directory}{name}Tab.{extension}"
+
     def output_file(self, directory, file_name):
         try:
-            file_list = file_name.split('.')
-
-            name = file_list[0]
-            extension = file_list[1]
-
-            if directory[-1] != '/':
-                directory += '/'
-
-            output_file_name = f"{directory}{name}Tab.{extension}"
+            output_file_name = self.__get_output_filename(file_name, directory)
 
             output_file = open(output_file_name, "w")
             return output_file
